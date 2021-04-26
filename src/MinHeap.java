@@ -45,6 +45,11 @@ public class MinHeap<T extends Comparable<T>> {
         return root;
     }
 
+    public T peek() throws NoSuchElementException {
+        if (isEmpty()) throw new NoSuchElementException("Empty heap");
+        return elements[0];
+    }
+
     private void heapifyDown() {
         int parent = 0;
         int leftChild = 1;
@@ -61,7 +66,7 @@ public class MinHeap<T extends Comparable<T>> {
 
     private int compareAndPick(int leftChild, int rightChild) {
         if (leftChild >= elements.length || elements[leftChild] == null) return -1;
-        if ((elements[leftChild].compareTo(elements[rightChild]) <= 0) || (elements[rightChild] == null))
+        if (rightChild >= elements.length || elements[rightChild] == null || elements[leftChild].compareTo(elements[rightChild]) <= 0)
             return leftChild;
         return rightChild;
     }

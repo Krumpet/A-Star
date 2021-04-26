@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -52,6 +53,36 @@ public class HeapTest {
         List<Integer> intList = new ArrayList<>();
         MinHeap<Integer> intHeapFromList = new MinHeap<>(intList);
         Assert.assertEquals(0, intHeapFromList.size());
+    }
+
+    @Test
+    public void addToHeapBeyondCapacityShouldThrow() {
+        for (int i = 0; i < 10; i++) {
+            integerMinHeap.add(i);
+        }
+        Assert.assertThrows(IllegalArgumentException.class, () -> integerMinHeap.add(10));
+    }
+
+    @Test
+    public void addToHeapFromIterableShouldThrow() {
+        List<Integer> intList = new ArrayList<>();
+        MinHeap<Integer> intHeapFromList = new MinHeap<>(intList);
         Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromList.add(2));
+
+        intList.add(3);
+        intList.add(4);
+        MinHeap<Integer> intHeapFromListTwo = new MinHeap<>(intList);
+        Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromListTwo.add(2));
+    }
+
+    @Test
+    public void heapGivesSortedListFromUnsortedIterable() {
+        List<Integer> unsortedNumbers = Arrays.asList(7, 3, 5, 4, 2, 9, 6);
+        unsortedNumbers.forEach(integerMinHeap::add);
+        List<Integer> sortedNumbers = new ArrayList<>();
+        while (integerMinHeap.size() > 0) {
+            sortedNumbers.add(integerMinHeap.removeMin());
+        }
+        Assert.assertArrayEquals(sortedNumbers.toArray(), new Integer[]{2, 3, 4, 5, 6, 7, 9});
     }
 }
