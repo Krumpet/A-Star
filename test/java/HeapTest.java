@@ -1,8 +1,9 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class HeapTest {
@@ -33,8 +34,24 @@ public class HeapTest {
     }
 
     @Test
-    public void returnsOneAfterAddingTwo() {
+    public void returnsOneAfterAddingTwoAndThenOne() {
+        integerMinHeap.add(2);
+        integerMinHeap.add(1);
+        Assert.assertEquals(Integer.valueOf(1), integerMinHeap.removeMin());
+    }
+
+    @Test
+    public void returnsOneAfterAddingOneAndThenTwo() {
+        integerMinHeap.add(1);
         integerMinHeap.add(2);
         Assert.assertEquals(Integer.valueOf(1), integerMinHeap.removeMin());
+    }
+
+    @Test
+    public void createsEmptyHeapFromEmptyIterable() {
+        List<Integer> intList = new ArrayList<>();
+        MinHeap<Integer> intHeapFromList = new MinHeap<>(intList);
+        Assert.assertEquals(0, intHeapFromList.size());
+        Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromList.add(2));
     }
 }

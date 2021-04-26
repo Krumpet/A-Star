@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
@@ -14,7 +15,7 @@ public class MinHeap<T extends Comparable<T>> {
     }
 
     public MinHeap(Iterable<T> collection) {
-        elements = (T[]) StreamSupport.stream(collection.spliterator(), false).toArray();
+        elements = (T[]) StreamSupport.stream(collection.spliterator(), false).toArray(Comparable[]::new);
         size = elements.length;
     }
 
