@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
@@ -15,7 +14,11 @@ public class MinHeap<T extends Comparable<T>> {
     }
 
     public MinHeap(Iterable<T> collection) {
-        elements = (T[]) StreamSupport.stream(collection.spliterator(), false).toArray(Comparable[]::new);
+        // TODO: optimize building the elements
+        elements = (T[]) StreamSupport
+                .stream(collection.spliterator(), false)
+                .sorted()
+                .toArray(Comparable[]::new);
         size = elements.length;
     }
 
@@ -50,35 +53,67 @@ public class MinHeap<T extends Comparable<T>> {
         return elements[0];
     }
 
-    private void heapifyDown() {
-        int parent = 0;
-        int leftChild = 1;
-        int rightChild = 2;
+    private void heapifyDown(int i) {
+        // get left and right child of node at index `i`
+        int left = LEFT(i);
+        int right = RIGHT(i);
 
-        int choice = compareAndPick(leftChild, rightChild);
+        int smallest = i;
 
-        while (choice != -1) {
-            swap(choice, parent);
-            parent = choice;
-            choice = compareAndPick(2 * choice + 1, 2 * choice + 2);
+        // TODO: extract to pickIndexOfSmallestChild
+        // compare `A[i]` with its left and right child
+        // and find the smallest value
+        if (left < size() && elements[left].compareTo(elements[i]) <= 0) {
+            smallest = left;
+        }
+
+        if (right < size() && elements[right].compareTo(elements[smallest]) <= 0) {
+            smallest = right;
+        }
+
+        if (smallest != i) {
+            // swap with a child having lesser value
+            swap(i, smallest);
+
+            // call heapifyDown on the child
+            heapifyDown(smallest);
         }
     }
 
-    private int compareAndPick(int leftChild, int rightChild) {
-        if (leftChild >= elements.length || elements[leftChild] == null) return -1;
-        if (rightChild >= elements.length || elements[rightChild] == null || elements[leftChild].compareTo(elements[rightChild]) <= 0)
-            return leftChild;
-        return rightChild;
+    // TODO: rename LEFT and RIGHT and PARENT
+    // return left child of `A[i]`
+    private int LEFT(int i) {
+        return (2 * i + 1);
+    }
+
+    // return right child of `A[i]`
+    private int RIGHT(int i) {
+        return (2 * i + 2);
+    }
+
+    // return parent of `A[i]`
+    private int PARENT(int i)
+    {
+        // if `i` is already a root node
+        if (i == 0) {
+            return 0;
+        }
+
+        return (i - 1) / 2;
+    }
+
+    private void heapifyDown() {
+        heapifyDown(0);
     }
 
     private void heapifyUp() {
         int childIndex = size - 1;
-        int parentIndex = (childIndex - 1) / 2;
+        int parentIndex = PARENT(childIndex);
 
         while (parentIndex >= 0 && elements[childIndex].compareTo(elements[parentIndex]) < 0) {
             swap(childIndex, parentIndex);
             childIndex = parentIndex;
-            parentIndex = (childIndex - 1) / 2;
+            parentIndex = PARENT(childIndex);
         }
     }
 
