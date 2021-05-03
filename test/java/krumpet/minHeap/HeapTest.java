@@ -1,3 +1,5 @@
+package krumpet.minHeap;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +14,11 @@ import java.util.stream.IntStream;
 public class HeapTest {
 
     MinHeap<Integer> integerMinHeap;
+    private static final int DEFAULT_CAPACITY = 10;
 
     @Before
     public void initHeap() {
-        integerMinHeap = new MinHeap<>(10);
+        integerMinHeap = new MinHeap<>(DEFAULT_CAPACITY);
     }
 
     @Test

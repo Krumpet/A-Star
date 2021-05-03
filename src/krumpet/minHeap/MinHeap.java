@@ -1,3 +1,5 @@
+package krumpet.minHeap;
+
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
@@ -92,8 +94,7 @@ public class MinHeap<T extends Comparable<T>> {
     }
 
     // return parent of `A[i]`
-    private int PARENT(int i)
-    {
+    private int PARENT(int i) {
         // if `i` is already a root node
         if (i == 0) {
             return 0;
