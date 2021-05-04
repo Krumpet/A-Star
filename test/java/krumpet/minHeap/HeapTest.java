@@ -14,11 +14,11 @@ import java.util.stream.IntStream;
 public class HeapTest {
 
     MinHeap<Integer> integerMinHeap;
-    private static final int DEFAULT_CAPACITY = 10;
+    private final int defaultCapacity = 10;
 
     @Before
     public void initHeap() {
-        integerMinHeap = new MinHeap<>(DEFAULT_CAPACITY);
+        integerMinHeap = new MinHeap<>(defaultCapacity);
     }
 
     @Test
