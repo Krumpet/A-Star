@@ -11,16 +11,16 @@ public class Heap<T> {
     private int size = 0;
     private final Comparator<T> comparator;
 
-    public Heap(Comparator<T> comparator) {
+    Heap(Comparator<T> comparator) {
         this(comparator, DEFAULT_CAPACITY);
     }
 
-    public Heap(Comparator<T> comparator, int capacity) {
+    Heap(Comparator<T> comparator, int capacity) {
         elements = (T[]) new Object[capacity];
         this.comparator = comparator;
     }
 
-    public Heap(Comparator<T> comparator, Iterable<T> collection) {
+    Heap(Comparator<T> comparator, Iterable<T> collection) {
         // TODO: optimize building the elements
         elements = (T[]) StreamSupport
                 .stream(collection.spliterator(), false)

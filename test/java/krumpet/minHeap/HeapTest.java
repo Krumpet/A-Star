@@ -1,5 +1,7 @@
 package krumpet.minHeap;
 
+import krumpet.heap.Heap;
+import krumpet.heap.HeapFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +15,12 @@ import java.util.stream.IntStream;
 
 public class HeapTest {
 
-    MinHeap<Integer> integerMinHeap;
+    Heap<Integer> integerMinHeap;
     private final int defaultCapacity = 10;
 
     @Before
     public void initHeap() {
-        integerMinHeap = new MinHeap<>(defaultCapacity);
+        integerMinHeap = HeapFactory.makeMinHeap(defaultCapacity);
     }
 
     @Test
@@ -56,7 +58,7 @@ public class HeapTest {
     @Test
     public void createsEmptyHeapFromEmptyIterable() {
         List<Integer> intList = new ArrayList<>();
-        MinHeap<Integer> intHeapFromList = new MinHeap<>(intList);
+        Heap<Integer> intHeapFromList = HeapFactory.makeMinHeap(intList);
         Assert.assertEquals(0, intHeapFromList.size());
     }
 
@@ -71,12 +73,12 @@ public class HeapTest {
     @Test
     public void addToHeapFromIterableShouldThrow() {
         List<Integer> intList = new ArrayList<>();
-        MinHeap<Integer> intHeapFromList = new MinHeap<>(intList);
+        Heap<Integer> intHeapFromList = HeapFactory.makeMinHeap(intList);
         Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromList.add(2));
 
         intList.add(3);
         intList.add(4);
-        MinHeap<Integer> intHeapFromListTwo = new MinHeap<>(intList);
+        Heap<Integer> intHeapFromListTwo = HeapFactory.makeMinHeap(intList);
         Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromListTwo.add(2));
     }
 
@@ -99,7 +101,7 @@ public class HeapTest {
             List<Integer> input = IntStream.rangeClosed(0, i).mapToObj(x -> finalI - x).collect(Collectors.toList());
             List<Integer> expected = input.stream().sorted().collect(Collectors.toList());
             List<Integer> actual = new ArrayList<>();
-            MinHeap<Integer> heap = new MinHeap<>(input);
+            Heap<Integer> heap = HeapFactory.makeMinHeap(input);
             while (heap.size() > 0) {
                 actual.add(heap.removeMin());
             }
@@ -109,31 +111,31 @@ public class HeapTest {
 
     @Test
     public void newHeapWithNoCapacityHasZeroSize() {
-        MinHeap<Integer> heap = new MinHeap<>();
+        Heap<Integer> heap = HeapFactory.makeMinHeap();
         Assert.assertEquals(0, heap.size());
     }
 
     @Test
     public void newHeapWithSpecificCapacityHasZeroSize() {
-        MinHeap<Integer> heap = new MinHeap<>(7);
+        Heap<Integer> heap = HeapFactory.makeMinHeap(7);
         Assert.assertEquals(0, heap.size());
     }
 
     @Test
     public void newHeapFromIterableHasSameSizeAsIterable() {
-        MinHeap<Integer> heap = new MinHeap<>(Arrays.asList(1,2,3,4,5,6,7));
+        Heap<Integer> heap = HeapFactory.makeMinHeap(Arrays.asList(1,2,3,4,5,6,7));
         Assert.assertEquals(7, heap.size());
     }
 
     @Test
     public void peekEmptyHeapShouldThrow() {
-        MinHeap<Integer> heap = new MinHeap<>();
+        Heap<Integer> heap = HeapFactory.makeMinHeap();
         Assert.assertThrows(NoSuchElementException.class, heap::peek);
     }
 
     @Test
     public void peekHeapAfterAddPopShouldThrow() {
-        MinHeap<Integer> heap = new MinHeap<>();
+        Heap<Integer> heap = HeapFactory.makeMinHeap();
         heap.add(1);
         heap.removeMin();
         Assert.assertThrows(NoSuchElementException.class, heap::peek);
@@ -141,7 +143,7 @@ public class HeapTest {
 
     @Test
     public void peekDoesNotModifyHeap() {
-        MinHeap<Integer> heap = new MinHeap<>();
+        Heap<Integer> heap = HeapFactory.makeMinHeap();
         heap.add(1);
         Assert.assertEquals(1, heap.size());
         Assert.assertEquals(Integer.valueOf(1), heap.peek());
@@ -150,7 +152,7 @@ public class HeapTest {
 
     @Test
     public void peekChangesAfterRemovingMin() {
-        MinHeap<Integer> heap = new MinHeap<>();
+        Heap<Integer> heap = HeapFactory.makeMinHeap();
         heap.add(1);
         heap.add(3);
         heap.add(2);
