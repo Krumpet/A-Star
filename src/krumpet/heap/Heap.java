@@ -1,5 +1,6 @@
 package krumpet.heap;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
@@ -9,19 +10,19 @@ public class Heap<T> {
 
     private final T[] elements;
     private int size = 0;
-    private final Comparator<T> comparator;
+    private final Comparator<? super T> comparator;
 
-    Heap(Comparator<T> comparator) {
+    Heap(Comparator<? super T> comparator) {
         this(comparator, DEFAULT_CAPACITY);
     }
 
-    Heap(Comparator<T> comparator, int capacity) {
+    Heap(Comparator<? super T> comparator, int capacity) {
         elements = (T[]) new Object[capacity];
         this.comparator = comparator;
     }
 
-    Heap(Comparator<T> comparator, Iterable<T> collection) {
-        // TODO: optimize building the elements
+    Heap(Comparator<? super T> comparator, Iterable<? extends T> collection) {
+        // TODO: optimize sorting the elements
         elements = (T[]) StreamSupport
                 .stream(collection.spliterator(), false)
                 .sorted(comparator)
@@ -31,11 +32,16 @@ public class Heap<T> {
     }
 
     public void add(T item) throws IllegalArgumentException {
-        if (size >= this.elements.length) {
-            throw new IllegalArgumentException("MinHeap over initial capacity of " + this.elements.length);
+        if (size() >= this.elements.length) {
+            throw new IllegalArgumentException("Heap over initial capacity of " + this.elements.length);
         }
         elements[size++] = item;
         heapifyUp();
+    }
+
+    public void clear() {
+        Arrays.fill(elements, null);
+        size = 0;
     }
 
     public int size() {
@@ -43,14 +49,14 @@ public class Heap<T> {
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return size() == 0;
     }
 
     public T pop() throws NoSuchElementException {
         if (isEmpty()) throw new NoSuchElementException("Empty heap");
         T root = elements[0];
-        swap(size - 1, 0);
-        elements[size - 1] = null;
+        swap(size() - 1, 0);
+        elements[size() - 1] = null;
         size--;
         heapifyDown();
         return root;
@@ -61,10 +67,14 @@ public class Heap<T> {
         return elements[0];
     }
 
+    private void heapifyDown() {
+        heapifyDown(0);
+    }
+
     private void heapifyDown(int i) {
         // get left and right child of node at index `i`
-        int left = LEFT(i);
-        int right = RIGHT(i);
+        int left = indexOfLeftChild(i);
+        int right = indexOfRightChild(i);
 
         int smallest = i;
 
@@ -88,19 +98,15 @@ public class Heap<T> {
         }
     }
 
-    // TODO: rename LEFT and RIGHT and PARENT
-    // return left child of `A[i]`
-    private int LEFT(int i) {
+    private int indexOfLeftChild(int i) {
         return (2 * i + 1);
     }
 
-    // return right child of `A[i]`
-    private int RIGHT(int i) {
+    private int indexOfRightChild(int i) {
         return (2 * i + 2);
     }
 
-    // return parent of `A[i]`
-    private int PARENT(int i) {
+    private int indexOfParent(int i) {
         // if `i` is already a root node
         if (i == 0) {
             return 0;
@@ -109,18 +115,14 @@ public class Heap<T> {
         return (i - 1) / 2;
     }
 
-    private void heapifyDown() {
-        heapifyDown(0);
-    }
-
     private void heapifyUp() {
-        int childIndex = size - 1;
-        int parentIndex = PARENT(childIndex);
+        int childIndex = size() - 1;
+        int parentIndex = indexOfParent(childIndex);
 
         while (parentIndex >= 0 && comparator.compare(elements[childIndex], elements[parentIndex]) < 0) {
             swap(childIndex, parentIndex);
             childIndex = parentIndex;
-            parentIndex = PARENT(childIndex);
+            parentIndex = indexOfParent(childIndex);
         }
     }
 

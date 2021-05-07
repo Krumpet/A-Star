@@ -92,7 +92,6 @@ public class IntegerMaxHeapTests {
     @Test
     public void variousSizesGiveSortedResults() {
         for (int i = 1; i < 23; i++) {
-            int finalI = i;
             // generate reverse list of numbers
             List<Integer> input = IntStream.rangeClosed(0, i).boxed().collect(Collectors.toList());
             List<Integer> expected = input.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());

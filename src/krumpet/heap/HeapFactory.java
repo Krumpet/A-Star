@@ -7,7 +7,7 @@ public class HeapFactory {
         return HeapFactory.makeMinHeap(S::compareTo);
     }
 
-    public static <T> Heap<T> makeMinHeap(Comparator<T> comparator) {
+    public static <T> Heap<T> makeMinHeap(Comparator<? super T> comparator) {
         return new Heap<>(comparator);
     }
 
@@ -15,15 +15,15 @@ public class HeapFactory {
         return HeapFactory.makeMinHeap(S::compareTo, capacity);
     }
 
-    public static <T> Heap<T> makeMinHeap(Comparator<T> comparator, int capacity) {
+    public static <T> Heap<T> makeMinHeap(Comparator<? super T> comparator, int capacity) {
         return new Heap<>(comparator, capacity);
     }
 
-    public static <S extends Comparable<S>> Heap<S> makeMinHeap(Iterable<S> iterable) {
+    public static <S extends Comparable<S>> Heap<S> makeMinHeap(Iterable<? extends S> iterable) {
         return HeapFactory.makeMinHeap(S::compareTo, iterable);
     }
 
-    public static <T> Heap<T> makeMinHeap(Comparator<T> comparator, Iterable<T> iterable) {
+    public static <T> Heap<T> makeMinHeap(Comparator<? super T> comparator, Iterable<? extends T> iterable) {
         return new Heap<>(comparator, iterable);
     }
 
@@ -31,7 +31,7 @@ public class HeapFactory {
         return HeapFactory.makeMaxHeap(S::compareTo);
     }
 
-    public static <T> Heap<T> makeMaxHeap(Comparator<T> comparator) {
+    public static <T> Heap<T> makeMaxHeap(Comparator<? super T> comparator) {
         return new Heap<>(comparator.reversed());
     }
 
@@ -39,15 +39,15 @@ public class HeapFactory {
         return HeapFactory.makeMaxHeap(S::compareTo, capacity);
     }
 
-    public static <T> Heap<T> makeMaxHeap(Comparator<T> comparator, int capacity) {
+    public static <T> Heap<T> makeMaxHeap(Comparator<? super T> comparator, int capacity) {
         return new Heap<>(comparator.reversed(), capacity);
     }
 
-    public static <S extends Comparable<S>> Heap<S> makeMaxHeap(Iterable<S> iterable) {
+    public static <S extends Comparable<S>> Heap<S> makeMaxHeap(Iterable<? extends S> iterable) {
         return HeapFactory.makeMaxHeap(S::compareTo, iterable);
     }
 
-    public static <T> Heap<T> makeMaxHeap(Comparator<T> comparator, Iterable<T> iterable) {
+    public static <T> Heap<T> makeMaxHeap(Comparator<? super T> comparator, Iterable<? extends T> iterable) {
         return new Heap<>(comparator.reversed(), iterable);
     }
 }
