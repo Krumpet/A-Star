@@ -46,7 +46,7 @@ public class Heap<T> {
         return size == 0;
     }
 
-    public T removeMin() throws NoSuchElementException {
+    public T pop() throws NoSuchElementException {
         if (isEmpty()) throw new NoSuchElementException("Empty heap");
         T root = elements[0];
         swap(size - 1, 0);
