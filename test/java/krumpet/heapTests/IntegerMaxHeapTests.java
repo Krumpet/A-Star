@@ -158,4 +158,48 @@ public class IntegerMaxHeapTests {
         heap.pop();
         Assert.assertEquals(Integer.valueOf(1), heap.peek());
     }
+
+    @Test
+    public void clearEmptyHeap() {
+        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        Assert.assertEquals(0, heap.size());
+
+        heap.clear();
+        Assert.assertEquals(0, heap.size());
+    }
+
+    @Test
+    public void clearHeapAfterInsert() {
+        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        Assert.assertEquals(0, heap.size());
+
+        heap.add(3);
+        Assert.assertEquals(1, heap.size());
+        heap.clear();
+        Assert.assertEquals(0, heap.size());
+    }
+
+    @Test
+    public void insertAfterClearAfterInsert() {
+        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        Assert.assertEquals(0, heap.size());
+
+        heap.add(3);
+        Assert.assertEquals(1, heap.size());
+        heap.clear();
+        Assert.assertEquals(0, heap.size());
+        heap.add(5);
+        Assert.assertEquals(1, heap.size());
+    }
+
+    @Test
+    public void clearHeapFromCollection() {
+        Heap<Integer> heap = HeapFactory.makeMaxHeap(Arrays.asList(1,2,3,4));
+        Assert.assertEquals(4, heap.size());
+
+        heap.clear();
+        Assert.assertEquals(0, heap.size());
+        heap.add(5);
+        Assert.assertEquals(1, heap.size());
+    }
 }
