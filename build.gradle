@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java']
+        }
+    }
+}
+dependencies {
+    compile 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13'
+    testRuntimeOnly 'junit:junit:4.13'
+}
+
+test {
+    useJUnit()
+    // include 'test/java/krumpet.heapTests'
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
