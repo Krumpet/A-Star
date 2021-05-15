@@ -1,7 +1,7 @@
 package krumpet.heapTests;
 
-import krumpet.heap.Heap;
-import krumpet.heap.HeapFactory;
+import krumpet.heap.IHeapFactory;
+import krumpet.heap.IHeap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class IntegerMaxHeapTests {
-    Heap<Integer> integerMaxHeap;
+    IHeap<Integer> integerMaxHeap;
     private final int defaultCapacity = 10;
 
     @Before
     public void initHeap() {
-        integerMaxHeap = HeapFactory.makeMaxHeap(defaultCapacity);
+        integerMaxHeap = IHeapFactory.makeMaxHeap(defaultCapacity);
     }
 
     @Test
@@ -54,8 +54,8 @@ public class IntegerMaxHeapTests {
     @Test
     public void createsEmptyHeapFromEmptyIterable() {
         List<Integer> intList = new ArrayList<>();
-        Heap<Integer> intHeapFromList = HeapFactory.makeMaxHeap(intList);
-        Assert.assertEquals(0, intHeapFromList.size());
+        IHeap<Integer> intIHeapFromList = IHeapFactory.makeMaxHeap(intList);
+        Assert.assertEquals(0, intIHeapFromList.size());
     }
 
     @Test
@@ -69,12 +69,12 @@ public class IntegerMaxHeapTests {
     @Test
     public void addToHeapFromIterableShouldThrow() {
         List<Integer> intList = new ArrayList<>();
-        Heap<Integer> intHeapFromList = HeapFactory.makeMaxHeap(intList);
+        IHeap<Integer> intHeapFromList = IHeapFactory.makeMaxHeap(intList);
         Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromList.add(2));
 
         intList.add(3);
         intList.add(4);
-        Heap<Integer> intHeapFromListTwo = HeapFactory.makeMaxHeap(intList);
+        IHeap<Integer> intHeapFromListTwo = IHeapFactory.makeMaxHeap(intList);
         Assert.assertThrows(IllegalArgumentException.class, () -> intHeapFromListTwo.add(2));
     }
 
@@ -96,9 +96,9 @@ public class IntegerMaxHeapTests {
             List<Integer> input = IntStream.rangeClosed(0, i).boxed().collect(Collectors.toList());
             List<Integer> expected = input.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
             List<Integer> actual = new ArrayList<>();
-            Heap<Integer> heap = HeapFactory.makeMaxHeap(input);
-            while (heap.size() > 0) {
-                actual.add(heap.pop());
+            IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap(input);
+            while (IHeap.size() > 0) {
+                actual.add(IHeap.pop());
             }
             Assert.assertEquals(expected, actual);
         }
@@ -106,31 +106,31 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void newHeapWithNoCapacityHasZeroSize() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
-        Assert.assertEquals(0, heap.size());
+        IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap();
+        Assert.assertEquals(0, IHeap.size());
     }
 
     @Test
     public void newHeapWithSpecificCapacityHasZeroSize() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap(7);
-        Assert.assertEquals(0, heap.size());
+        IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap(7);
+        Assert.assertEquals(0, IHeap.size());
     }
 
     @Test
     public void newHeapFromIterableHasSameSizeAsIterable() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
-        Assert.assertEquals(7, heap.size());
+        IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
+        Assert.assertEquals(7, IHeap.size());
     }
 
     @Test
     public void peekEmptyHeapShouldThrow() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
-        Assert.assertThrows(NoSuchElementException.class, heap::peek);
+        IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap();
+        Assert.assertThrows(NoSuchElementException.class, IHeap::peek);
     }
 
     @Test
     public void peekHeapAfterAddPopShouldThrow() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap();
         heap.add(1);
         heap.pop();
         Assert.assertThrows(NoSuchElementException.class, heap::peek);
@@ -138,7 +138,7 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void peekDoesNotModifyHeap() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap();
         heap.add(1);
         Assert.assertEquals(1, heap.size());
         Assert.assertEquals(Integer.valueOf(1), heap.peek());
@@ -147,7 +147,7 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void peekChangesAfterRemovingMin() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap();
         heap.add(1);
         heap.add(3);
         heap.add(2);
@@ -161,16 +161,16 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void clearEmptyHeap() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
-        Assert.assertEquals(0, heap.size());
+        IHeap<Integer> IHeap = IHeapFactory.makeMaxHeap();
+        Assert.assertEquals(0, IHeap.size());
 
-        heap.clear();
-        Assert.assertEquals(0, heap.size());
+        IHeap.clear();
+        Assert.assertEquals(0, IHeap.size());
     }
 
     @Test
     public void clearHeapAfterInsert() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap();
         Assert.assertEquals(0, heap.size());
 
         heap.add(3);
@@ -181,7 +181,7 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void insertAfterClearAfterInsert() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap();
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap();
         Assert.assertEquals(0, heap.size());
 
         heap.add(3);
@@ -194,7 +194,7 @@ public class IntegerMaxHeapTests {
 
     @Test
     public void clearHeapFromCollection() {
-        Heap<Integer> heap = HeapFactory.makeMaxHeap(Arrays.asList(1,2,3,4));
+        IHeap<Integer> heap = IHeapFactory.makeMaxHeap(Arrays.asList(1,2,3,4));
         Assert.assertEquals(4, heap.size());
 
         heap.clear();

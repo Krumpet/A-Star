@@ -5,8 +5,7 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
-public class Heap<T> {
-    public static final int DEFAULT_CAPACITY = 100;
+public class Heap<T> implements IHeap<T> {
 
     private final T[] elements;
     private int size = 0;
@@ -31,6 +30,7 @@ public class Heap<T> {
         this.comparator = comparator;
     }
 
+    @Override
     public void add(T item) throws IllegalArgumentException {
         if (size() >= this.elements.length) {
             throw new IllegalArgumentException("Heap over initial capacity of " + this.elements.length);
@@ -39,19 +39,23 @@ public class Heap<T> {
         heapifyUp();
     }
 
+    @Override
     public void clear() {
         Arrays.fill(elements, null);
         size = 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
     public T pop() throws NoSuchElementException {
         if (isEmpty()) throw new NoSuchElementException("Empty heap");
         T root = elements[0];
@@ -62,6 +66,7 @@ public class Heap<T> {
         return root;
     }
 
+    @Override
     public T peek() throws NoSuchElementException {
         if (isEmpty()) throw new NoSuchElementException("Empty heap");
         return elements[0];
