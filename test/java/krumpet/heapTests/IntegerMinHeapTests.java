@@ -16,10 +16,10 @@ import java.util.stream.IntStream;
 public class IntegerMinHeapTests {
 
     IHeap<Integer> integerMinHeap;
-    private final int defaultCapacity = 10;
 
     @Before
     public void initHeap() {
+        int defaultCapacity = 10;
         integerMinHeap = IHeapFactory.makeMinHeap(defaultCapacity);
     }
 

@@ -12,10 +12,10 @@ import java.util.stream.IntStream;
 
 public class IntegerMaxHeapTests {
     IHeap<Integer> integerMaxHeap;
-    private final int defaultCapacity = 10;
 
     @Before
     public void initHeap() {
+        int defaultCapacity = 10;
         integerMaxHeap = IHeapFactory.makeMaxHeap(defaultCapacity);
     }
 
